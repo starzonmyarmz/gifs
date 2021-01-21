@@ -1,0 +1,21 @@
+{
+  "name": "gifs",
+  "version": "1.0.0",
+  "description": "My personal collection of gifs",
+  "scripts": {
+    "build": "eleventy",
+    "serve": "eleventy --serve"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/starzonmyarmz/gifs.git"
+  },
+  "author": "Daniel Marino",
+  "bugs": {
+    "url": "https://github.com/starzonmyarmz/gifs/issues"
+  },
+  "homepage": "https://github.com/starzonmyarmz/gifs#readme",
+  "devDependencies": {
+    "@11ty/eleventy": "^0.11.1"
+  }
+}
