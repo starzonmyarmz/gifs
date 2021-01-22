@@ -1,0 +1,7 @@
+---
+permalink: /gifs.json
+---
+
+{
+  "gifs": [{% for gif in helpers.gifs() %}"{{ gif }}"{{ '' if loop.last else ',' }}{% endfor %}]
+}
