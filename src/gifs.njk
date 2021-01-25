@@ -5,7 +5,7 @@ permalink: /gifs.json
   {% for gif in helpers.gifs() %}
     {
       "keywords": "{{ gif | titlize }}",
-      "url": "{{ gif }}"
+      "url": "g/{{ gif }}.gif"
     }{{ '' if loop.last else ',' }}
   {% endfor %}
 ]
