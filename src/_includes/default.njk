@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Gifz</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+      body {
+        font-family: helvetica, arial, sans-serif;
+      }
+      img:hover {
+        cursor: pointer;
+      }
+      .animate {
+        animation: fade 2s 2s forwards;
+        background: #fff;
+        border-radius: 100px;
+        box-shadow: 0 4px 12px -4px rgba(0, 0, 0, 0.25);
+        bottom: 2rem;
+        color: #222;
+        left: 2rem;
+        opacity: 1;
+        padding: 1rem;
+        pointer-events: none;
+        position: fixed;
+        right: 2rem;
+        text-align: center;
+      }
+      @keyframes fade {
+        to {
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    {{ content | safe }}
+
+    <div id="toast"></div>
+
+    <script>
+      document.addEventListener('click', ({target}) => {
+        if (!target.closest('img')) return
+
+        const toast = document.getElementById('toast')
+
+        navigator.clipboard.writeText(target.src)
+          .then(
+            () => { toast.innerText = '🎉 Copied gif url!' },
+            () => { toast.innerText = '🥺 Something went wrong.'}
+          )
+
+        toast.classList.remove('animate')
+        void toast.offsetWidth
+        toast.classList.add('animate')
+      })
+    </script>
+  </body>
+</html>

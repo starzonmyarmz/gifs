@@ -1,15 +1,9 @@
 ---
-title: Home
+title: Gifz
+layout: default
 permalink: /
 ---
 
 {% for gif in helpers.gifs() -%}
   <img src="g/{{ gif }}.gif" alt="{{ gif | titlize }}" loading="lazy">
 {% endfor -%}
-
-<script>
-  document.addEventListener('click', ({target}) => {
-    if (!target.closest('img')) return
-    navigator.clipboard.writeText(target.src)
-  })
-</script>
