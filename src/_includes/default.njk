@@ -10,13 +10,16 @@
         box-sizing: border-box;
       }
       body {
+        display: grid-lanes;
         font-family: helvetica, arial, sans-serif;
+        gap: 8px;
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
         margin: 0.5rem;
       }
       img {
+        display: block;
+        object-fit: contain;
         max-width: 100%;
-        padding: 0.5rem;
-        vertical-align: top;
       }
       img:hover {
         cursor: pointer;
