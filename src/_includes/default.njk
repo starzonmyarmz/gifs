@@ -4,12 +4,16 @@
     <meta charset="utf-8">
     <title>Gifz</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#eb1e8a">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/icon-192.png">
 
     <style>
       * {
         box-sizing: border-box;
       }
       body {
+        display: grid;
         display: grid-lanes;
         font-family: helvetica, arial, sans-serif;
         gap: 8px;
@@ -53,6 +57,10 @@
     <div id="toast"></div>
 
     <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js')
+      }
+
       document.addEventListener('click', ({target}) => {
         if (!target.closest('img')) return
 
