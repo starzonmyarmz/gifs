@@ -47,12 +47,18 @@ const buildThumb = (file) => {
   const src = path.join(SRC_GIFS, file)
   const dest = path.join(DIST_THUMBS, file)
   if (isFresh(src, dest)) return false
-  const result = spawnSync(
+  const resize = spawnSync(gifsicle, ['--resize-fit', '96x96', '--colors', '255', src, '#0'])
+  if (resize.status !== 0) throw new Error(`gifsicle resize failed on ${file}`)
+  const w = resize.stdout.readUInt16LE(6)
+  const h = resize.stdout.readUInt16LE(8)
+  const x = Math.floor((96 - w) / 2)
+  const y = Math.floor((96 - h) / 2)
+  const pad = spawnSync(
     gifsicle,
-    ['-O3', '--lossy=80', '--resize-fit', '96x96', src, '#0', '-o', dest],
-    { stdio: 'inherit' }
+    ['-O3', '--lossy=80', '--logical-screen', '96x96', '--position', `${x},${y}`, '--transparent=255', '--background=255', '-o', dest],
+    { input: resize.stdout }
   )
-  if (result.status !== 0) throw new Error(`gifsicle thumb failed on ${file}`)
+  if (pad.status !== 0) throw new Error(`gifsicle thumb failed on ${file}`)
   return true
 }
 
