@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "My personal collection of gifs",
   "scripts": {
-    "build": "eleventy",
-    "serve": "eleventy --serve"
+    "build": "node build.js",
+    "watch": "node build.js --watch"
   },
   "repository": {
     "type": "git",
@@ -19,8 +19,6 @@
   },
   "homepage": "https://github.com/starzonmyarmz/gifs#readme",
   "devDependencies": {
-    "@11ty/eleventy": "^0.11.1",
-    "glob": "^7.1.6",
-    "jimp": "^0.16.1"
+    "gifsicle": "^7.0.1"
   }
 }
