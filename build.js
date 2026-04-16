@@ -134,7 +134,7 @@ ${imgs}
 
 const renderFeed = (names) =>
   JSON.stringify(
-    names.map((n) => ({ keywords: titlize(n), url: `g/${n}.gif`, thumb: `t/${n}.gif` })),
+    names.map((n) => ({ keywords: titlize(n), url: `${n}.gif` })),
     null,
     2
   ) + '\n'
