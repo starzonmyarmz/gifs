@@ -18,6 +18,7 @@ const SRC_GIFS = path.join(ROOT, 'g')
 const SRC_ASSETS = path.join(ROOT, 'src')
 const DIST = path.join(ROOT, 'dist')
 const DIST_GIFS = path.join(DIST, 'g')
+const DIST_THUMBS = path.join(DIST, 't')
 
 const PASSTHROUGH = ['manifest.json', 'sw.js', 'icon-192.png', 'icon-512.png']
 
@@ -39,6 +40,19 @@ const compressGif = (file) => {
   if (isFresh(src, dest)) return false
   const result = spawnSync(gifsicle, ['-O3', '--lossy=80', '-o', dest, src], { stdio: 'inherit' })
   if (result.status !== 0) throw new Error(`gifsicle failed on ${file}`)
+  return true
+}
+
+const buildThumb = (file) => {
+  const src = path.join(SRC_GIFS, file)
+  const dest = path.join(DIST_THUMBS, file)
+  if (isFresh(src, dest)) return false
+  const result = spawnSync(
+    gifsicle,
+    ['-O3', '--lossy=80', '--resize-fit', '96x96', src, '#0', '-o', dest],
+    { stdio: 'inherit' }
+  )
+  if (result.status !== 0) throw new Error(`gifsicle thumb failed on ${file}`)
   return true
 }
 
@@ -114,18 +128,21 @@ ${imgs}
 
 const renderFeed = (names) =>
   JSON.stringify(
-    names.map((n) => ({ keywords: titlize(n), url: `g/${n}.gif` })),
+    names.map((n) => ({ keywords: titlize(n), url: `g/${n}.gif`, thumb: `t/${n}.gif` })),
     null,
     2
   ) + '\n'
 
 const build = () => {
   fs.mkdirSync(DIST_GIFS, { recursive: true })
+  fs.mkdirSync(DIST_THUMBS, { recursive: true })
 
   const files = listGifs()
   let compressed = 0
+  let thumbed = 0
   for (const file of files) {
     if (compressGif(file)) compressed++
+    if (buildThumb(file)) thumbed++
   }
 
   const names = files.map((f) => path.parse(f).name)
@@ -136,7 +153,7 @@ const build = () => {
     fs.copyFileSync(path.join(SRC_ASSETS, asset), path.join(DIST, asset))
   }
 
-  console.log(`built ${files.length} gifs (${compressed} re-compressed)`)
+  console.log(`built ${files.length} gifs (${compressed} re-compressed, ${thumbed} thumbs)`)
 }
 
 const watch = () => {

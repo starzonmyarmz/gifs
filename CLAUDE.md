@@ -15,8 +15,8 @@ Personal gif collection, built by a single `build.js` script and deployed to Net
 
 Content flow:
 - Raw `.gif` files live in `/g/` at repo root. Dropping a new gif in `/g/` is the entire "add a gif" workflow — no index, no registry.
-- `build.js` globs `./g/*.gif`, runs each through `gifsicle` (`-O3 --lossy=80`) into `dist/g/`, and renders `dist/index.html` + `dist/gifs.json` from inline template literals. It then copies `src/manifest.json`, `src/sw.js`, and the icons to `dist/`.
-- `dist/gifs.json` is the public JSON feed consumed by the companion [Alfred workflow](https://github.com/starzonmyarmz/gifz-alfred-workflow). Shape is `[{keywords, url}, ...]` — keep it stable.
+- `build.js` globs `./g/*.gif`, runs each through `gifsicle` (`-O3 --lossy=80`) into `dist/g/`, and also generates a static 96x96-fit first-frame thumbnail into `dist/t/` (`gifsicle -O3 --lossy=80 --resize-fit 96x96 '#0'`). Then renders `dist/index.html` + `dist/gifs.json` from inline template literals and copies `src/manifest.json`, `src/sw.js`, and the icons to `dist/`.
+- `dist/gifs.json` is the public JSON feed consumed by the companion [Alfred workflow](https://github.com/starzonmyarmz/gifz-alfred-workflow). Shape is `[{keywords, url, thumb}, ...]` — keep it stable.
 - Filename slug = display text. Hyphens become spaces for `keywords` / `alt`. Name files kebab-case (e.g. `andy-hits-computer.gif`).
 - Compression is incremental: gifs whose source mtime is older than the output are skipped. First build takes ~40s on 59 gifs; subsequent builds are near-instant unless something changed.
 
